@@ -1,0 +1,107 @@
+{% extends "core/base.html" %}
+{% block title %}Hakkımızda | VM Bilgisayar{% endblock %}
+
+{% block content %}
+
+<!-- ÜST BÖLÜM -->
+<div class="bg-white border rounded-3 p-4 p-md-5 hero mb-4">
+  <h1 class="fw-bold mb-3">Hakkımızda</h1>
+  <p class="text-muted" style="max-width: 70ch;">
+    VM Bilgisayar olarak Ankara merkezli hizmet veriyor; bireysel ve kurumsal
+    müşterilerimizin dijital ihtiyaçlarına pratik, anlaşılır ve güvenilir çözümler
+    sunuyoruz. Amacımız, teknolojiyi karmaşık hale getirmeden işinizi kolaylaştıran
+    sistemler kurmak ve ihtiyaç duyduğunuz her an yanınızda olmaktır.
+  </p>
+</div>
+
+<!-- ÖNE ÇIKAN DEĞERLER -->
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="bg-white border rounded-3 p-4 h-100">
+      <div class="icon-pill mb-3">🎯</div>
+      <div class="fw-semibold">İhtiyaca Odaklı</div>
+      <div class="small-muted mt-2">
+        Her müşterinin ihtiyacını ayrı değerlendirir, gereksiz çözümler sunmayız.
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="bg-white border rounded-3 p-4 h-100">
+      <div class="icon-pill mb-3">⚙️</div>
+      <div class="fw-semibold">Sade & Anlaşılır</div>
+      <div class="small-muted mt-2">
+        Kurulumdan kullanıma kadar süreci açık ve anlaşılır şekilde yönetiriz.
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="bg-white border rounded-3 p-4 h-100">
+      <div class="icon-pill mb-3">🤝</div>
+      <div class="fw-semibold">Güvenilir Destek</div>
+      <div class="small-muted mt-2">
+        Sadece kurulumda değil, sonrasında da ulaşılabilir olmayı önemseriz.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NE YAPIYORUZ -->
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="bg-white border rounded-3 p-4 h-100">
+      <h2 class="h5 fw-bold mb-3">Ne Yapıyoruz?</h2>
+
+      <div class="mb-3">
+        <div class="fw-semibold">e-Dönüşüm Çözümleri</div>
+        <div class="small-muted">
+          e-Fatura, e-Arşiv, e-İrsaliye ve e-Defter süreçlerinde kurulum, geçiş ve destek hizmetleri.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="fw-semibold">Yazılım & Entegrasyon</div>
+        <div class="small-muted">
+          Ön muhasebe ve iş uygulamalarına uyumlu entegrasyonlar, otomasyonlar ve özel çözümler.
+        </div>
+      </div>
+
+      <div>
+        <div class="fw-semibold">Bilgisayar & Teknik Destek</div>
+        <div class="small-muted">
+          Bilgisayar kurulumu, bakım, yapılandırma ve günlük teknik destek hizmetleri.
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <a href="{% url 'services' %}" class="btn btn-dark">
+        Hizmetlerimizi İncele
+      </a>
+    </div>
+  </div>
+
+  <!-- ÇALIŞMA PRENSİBİ -->
+  <div class="col-lg-5">
+    <div class="bg-white border rounded-3 p-4 h-100">
+      <h2 class="h5 fw-bold mb-3">Çalışma Anlayışımız</h2>
+      <ol class="small-muted mb-0">
+        <li class="mb-2">İhtiyacı dinler ve doğru şekilde analiz ederiz.</li>
+        <li class="mb-2">Uygun çözümü net bir planla sunarız.</li>
+        <li class="mb-2">Kurulum ve ayarları sorunsuz şekilde tamamlarız.</li>
+        <li class="mb-2">Kullanım sürecinde destek sağlamaya devam ederiz.</li>
+        <li>Uzun vadeli, güvene dayalı iş ilişkileri kurmayı hedefleriz.</li>
+      </ol>
+
+      <hr class="my-4">
+
+      <div class="small-muted">
+        <div class="fw-semibold text-dark mb-1">Sloganımız</div>
+        Dijital Geleceğe Güvenli Bir Adım
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

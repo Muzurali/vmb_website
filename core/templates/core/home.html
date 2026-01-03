@@ -1,0 +1,98 @@
+{% extends "core/base.html" %}
+{% block title %}Ana Sayfa | VM Bilgisayar{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="p-4 p-md-5 bg-white border rounded-3 mb-4">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-7">
+      <h1 class="display-6 fw-bold mb-2">Dijital Geleceğe Güvenli Bir Adım</h1>
+      <p class="lead text-muted mb-3">
+        e-Dönüşüm, yazılım, donanım ve dijital çözümlerle işletmenize uçtan uca destek sağlıyoruz.
+      </p>
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-dark btn-lg" href="{% url 'services' %}">Hizmetleri İncele</a>
+        <a class="btn btn-outline-dark btn-lg" href="{% url 'contact' %}">Teklif / İletişim</a>
+      </div>
+      <div class="text-muted small mt-3">
+        Hızlı destek • Şeffaf süreç • Kurulum & danışmanlık
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="bg-light border rounded-3 p-4 h-100">
+        <div class="fw-semibold mb-2">Hızlı İletişim</div>
+        <div class="text-muted small mb-3">
+          Sorularınızı iş günlerinde en kısa sürede yanıtlamaya çalışıyoruz.
+        </div>
+        <div class="d-grid gap-2">
+          <a class="btn btn-outline-dark" href="tel:+905303795661">📞 0530 379 56 61</a>
+          <a class="btn btn-outline-dark" href="mailto:[email protected]">✉️ [email protected]</a>
+          <a class="btn btn-dark" href="{% url 'contact' %}">İletişim Formu</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÖNE ÇIKANLAR -->
+<section class="mb-4">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="bg-white border rounded-3 p-4 h-100">
+        <div class="fw-semibold mb-1">e-Dönüşüm</div>
+        <div class="text-muted small">e-Fatura, e-Arşiv, e-Defter süreçleriniz için uçtan uca kurulum/danışmanlık.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="bg-white border rounded-3 p-4 h-100">
+        <div class="fw-semibold mb-1">Yazılım & Entegrasyon</div>
+        <div class="text-muted small">ERP / ön muhasebe / fatura tasarımı gibi iş akışlarınıza uygun çözümler.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="bg-white border rounded-3 p-4 h-100">
+        <div class="fw-semibold mb-1">Donanım & Destek</div>
+        <div class="text-muted small">Laptop, yazıcı, kartuş temini ve kurulum/aktivasyon hizmetleri.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HİZMETLER -->
+<section class="mb-4">
+  <div class="d-flex justify-content-between align-items-end mb-2">
+    <h2 class="h4 fw-bold m-0">Hizmetlerimiz</h2>
+    <a class="text-decoration-none" href="{% url 'services' %}">Tümünü gör →</a>
+  </div>
+
+  <div class="row g-3">
+    {% for s in services %}
+    <div class="col-sm-6 col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="fw-semibold">{{ s.title }}</div>
+          <div class="text-muted small mt-1">Detayları görmek için tıklayın.</div>
+        </div>
+        <div class="card-footer bg-white border-0">
+          <a class="btn btn-sm btn-outline-dark" href="{% url 'service_detail' s.slug %}">Detaya Git</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="bg-dark text-white rounded-3 p-4 p-md-5">
+  <div class="row align-items-center g-3">
+    <div class="col-lg-8">
+      <h3 class="fw-bold mb-1">İşletmenize uygun çözümü birlikte belirleyelim.</h3>
+      <div class="text-white-50">İhtiyacınızı yazın, size en doğru yolu önerelim.</div>
+    </div>
+    <div class="col-lg-4 text-lg-end">
+      <a class="btn btn-light btn-lg" href="{% url 'contact' %}">İletişime Geç</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

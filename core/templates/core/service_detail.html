@@ -1,0 +1,86 @@
+{% extends "core/base.html" %}
+{% block title %}{{ service.title }} | VM Bilgisayar{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'home' %}">Ana Sayfa</a></li>
+    <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'services' %}">Hizmetler</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ service.title }}</li>
+  </ol>
+</nav>
+
+<div class="row g-3">
+  <!-- LEFT: Detail -->
+  <div class="col-lg-8">
+    <h1 class="h3 fw-bold">{{ service.title }}</h1>
+
+    {% if detail %}
+      <div class="bg-white border rounded-3 p-4 mt-3">
+        <p class="text-muted mb-4">{{ detail.intro }}</p>
+
+        {% for sec in detail.sections %}
+          <h2 class="h5 fw-bold mt-4">{{ sec.title }}</h2>
+
+          {% if sec.text %}
+            <p class="text-muted mb-2">{{ sec.text }}</p>
+          {% endif %}
+
+          {% if sec.bullets %}
+            <ul class="text-muted mb-0">
+              {% for b in sec.bullets %}
+                <li>{{ b }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="bg-dark text-white rounded-3 p-4 mt-3">
+        <div class="fw-bold">{{ detail.cta_title }}</div>
+        <div class="text-white-50">{{ detail.cta_text }}</div>
+        <div class="mt-3">
+          <a class="btn btn-light" href="{% url 'contact' %}">Teklif / İletişim</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="bg-white border rounded-3 p-4 mt-3">
+        <p class="mb-0 text-muted">Bu hizmetin içeriğini sırayla ekleyeceğiz.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- RIGHT: Other services -->
+  <div class="col-lg-4">
+    <div class="bg-white border rounded-3 p-4">
+      <div class="fw-semibold mb-2">Diğer Hizmetler</div>
+      <div class="list-group list-group-flush">
+        {% for s in other_services %}
+          <a class="list-group-item list-group-item-action"
+             href="{% url 'service_detail' s.slug %}">
+            {{ s.title }}
+          </a>
+        {% endfor %}
+      </div>
+
+      <div class="mt-3">
+        <a class="btn btn-outline-dark w-100" href="{% url 'services' %}">Tüm Hizmetler</a>
+      </div>
+    </div>
+
+    <div class="bg-white border rounded-3 p-4 mt-3">
+      <div class="fw-semibold mb-2">Hızlı İletişim</div>
+      <div class="text-muted small mb-3">Sorularınızı en kısa sürede yanıtlarız.</div>
+      <div class="d-grid gap-2">
+        <a class="btn btn-outline-dark" href="tel:{{ contact.phone_href }}">📞 {{ contact.phone_display }}</a>
+        <a class="btn btn-outline-dark" href="mailto:{{ contact.email }}">✉️ {{ contact.email }}</a>
+        <a class="btn btn-dark" href="{% url 'contact' %}">İletişim Formu</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

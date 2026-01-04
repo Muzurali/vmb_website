@@ -33,48 +33,66 @@
   <div class="col-lg-7">
     <div class="bg-white border rounded-3 p-4">
       <div class="fw-semibold mb-2">Mesaj Gönder (şimdilik taslak)</div>
+
       <form method="post" novalidate>
-  {% csrf_token %}
+        {% csrf_token %}
 
-  <!-- Honeypot (bot yakalar) -->
-  {{ form.website }}
+        <!-- Honeypot (bot yakalar) -->
+        {{ form.website }}
 
-  <div class="mb-3">
-    <label class="form-label">Ad Soyad</label>
-    {{ form.name }}
-    {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors|striptags }}</div>{% endif %}
-  </div>
+        <div class="mb-3">
+          <label class="form-label">Ad Soyad</label>
+          {{ form.name }}
+          {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors|striptags }}</div>{% endif %}
+        </div>
 
-  <div class="mb-3">
-    <label class="form-label">E-posta</label>
-    {{ form.email }}
-    {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors|striptags }}</div>{% endif %}
-  </div>
+        <div class="mb-3">
+          <label class="form-label">E-posta</label>
+          {{ form.email }}
+          {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors|striptags }}</div>{% endif %}
+        </div>
 
-  <div class="mb-3">
-    <label class="form-label">Telefon (opsiyonel)</label>
-    {{ form.phone }}
-  </div>
+        <div class="mb-3">
+          <label class="form-label">Telefon (opsiyonel)</label>
+          {{ form.phone }}
+          {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors|striptags }}</div>{% endif %}
+        </div>
 
-  <div class="mb-3">
-    <label class="form-label">Konu (opsiyonel)</label>
-    {{ form.subject }}
-  </div>
+        <div class="mb-3">
+          <label class="form-label">Konu (opsiyonel)</label>
+          {{ form.subject }}
+          {% if form.subject.errors %}<div class="text-danger small">{{ form.subject.errors|striptags }}</div>{% endif %}
+        </div>
 
-  <div class="mb-3">
-    <label class="form-label">Mesaj</label>
-    {{ form.message }}
-    {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors|striptags }}</div>{% endif %}
-  </div>
+        <div class="mb-3">
+          <label class="form-label">Mesaj</label>
+          {{ form.message }}
+          {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors|striptags }}</div>{% endif %}
+        </div>
 
-  <button type="submit" class="btn btn-dark w-100">Gönder</button>
-</form>
-<script>
-  document.querySelectorAll("input, textarea").forEach(el => {
-    el.classList.add("form-control");
-  });
-</script>
+        <!-- ✅ KVKK / Onay (consent) -->
+        <div class="form-check mb-3">
+          {{ form.consent }}
+          <label class="form-check-label" for="{{ form.consent.id_for_label }}">
+            KVKK şartlarını okudum ve onaylıyorum.
+          </label>
+          {% if form.consent.errors %}
+            <div class="text-danger small">{{ form.consent.errors|striptags }}</div>
+          {% endif %}
+        </div>
 
+        <button type="submit" class="btn btn-dark w-100">Gönder</button>
+      </form>
+
+      <script>
+        // Sadece text/email/tel gibi inputlara form-control ver
+        document.querySelectorAll('input:not([type="checkbox"]):not([type="hidden"]), textarea, select')
+          .forEach(el => el.classList.add("form-control"));
+
+        // Checkbox (consent) Bootstrap class
+        document.querySelectorAll('input[type="checkbox"]')
+          .forEach(el => el.classList.add("form-check-input"));
+      </script>
 
     </div>
   </div>

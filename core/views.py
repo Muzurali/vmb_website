@@ -1,14 +1,11 @@
 from django.conf import settings
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.http import Http404
 from django.shortcuts import redirect, render
 
 from .content import SERVICES, SERVICE_DETAILS
-from .forms import ContactForm , QuoteForm
-from django.core.mail import EmailMessage
-
-
+from .forms import ContactForm, QuoteForm
 
 
 def home(request):
@@ -33,9 +30,9 @@ def service_detail(request, slug):
         {"service": svc, "detail": detail, "other_services": other_services},
     )
 
+
 def about(request):
     return render(request, "core/about.html")
-
 
 
 def contact(request):
@@ -58,7 +55,6 @@ def contact(request):
                 f"Telefon: {d.get('phone','')}",
             ]
 
-            # Teklif alanları doluysa ekle
             if d.get("company"):
                 body_lines.append(f"Firma Ünvanı: {d.get('company')}")
 
@@ -68,75 +64,60 @@ def contact(request):
             if d.get("monthly_count") is not None:
                 body_lines.append(f"Aylık belge/adet: {d.get('monthly_count')}")
 
-            body_lines.append("")  # boş satır
+            body_lines.append("")
             body_lines.append("Mesaj:")
             body_lines.append(d.get("message", ""))
 
             body = "\n".join(body_lines)
 
-            send_mail(
+            email = EmailMessage(
                 subject=f"[VM Bilgisayar] {subject}",
-                message=body,
+                body=body,
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.CONTACT_TO_EMAIL],
-                fail_silently=False,
+                to=[settings.CONTACT_TO_EMAIL],
             )
+
+            # reply_to sadece email varsa ekle (None göndermeyelim)
+            if d.get("email"):
+                email.reply_to = [d.get("email")]
+
+            email.send(fail_silently=False)
 
             messages.success(request, "Mesajınız alındı. En kısa sürede dönüş yapacağız.")
             return redirect("contact")
+        print("CONTACT FORM ERRORS:", form.errors)
+        print("CONTACT FORM DATA:", request.POST)
 
         messages.error(request, "Formda hata var. Lütfen alanları kontrol edin.")
     else:
-        form = ContactForm()
+        form = ContactForm()  # ✅ GET isteğinde form burada oluşuyor
 
     return render(request, "core/contact.html", {"form": form})
 
+
 def quote(request):
-    print("QUOTE METHOD:", request.method)
     if request.method == "POST":
         form = QuoteForm(request.POST)
-        print("POST DATA:", request.POST)
-        print("FORM ERRORS:", form.errors)
         if form.is_valid():
             d = form.cleaned_data
 
-            services_labels = []
-            if d.get("services"):
-                choices = dict(form.fields["services"].choices)
-                services_labels = [choices.get(k, k) for k in d["services"]]
-
-            subject = "Teklif Talebi"
+            # checkbox slug -> label
+            choices = dict(form.fields["services"].choices)
+            services_labels = [choices.get(k, k) for k in d.get("services", [])]
 
             body_lines = [
-                f"Teklif Tipi: {d.get('offer_type','')}",
-                f"Ad Soyad: {d.get('name','')}",
-                f"E-posta: {d.get('email','')}",
-                f"Telefon: {d.get('phone','')}",
-                f"Firma Ünvanı: {d.get('company','')}",
-                f"VKN/TCKN: {d.get('tax_no','')}",
-                f"ERP/Muhasebe: {d.get('erp_name','')}",
-                f"Nereden Duydu: {d.get('heard_from','')}",
-                f"e-Belge Kullanımı: {d.get('e_doc_usage','')}",
+                f"Ad Soyad: {d.get('name')}",
+                f"Telefon: {d.get('phone')}",
+                f"E-posta: {d.get('email')}",
+                f"Hizmetler: {', '.join(services_labels)}",
+                "",
+                "Açıklama:",
+                d.get("message") or "-",
             ]
-
-            if services_labels:
-                body_lines.append(f"Hizmetler: {', '.join(services_labels)}")
-
-            if d.get("monthly_count") is not None:
-                body_lines.append(f"Aylık belge/adet: {d.get('monthly_count')}")
-
-            body_lines.append("")
-            body_lines.append("Not / Açıklama:")
-            body_lines.append(d.get("message", "") or "-")
-
-            body_lines.append("")
-            body_lines.append(f"KVKK Onay: {d.get('consent')}")
-            body_lines.append(f"Ticari İleti: {d.get('marketing_ok')}")
-
             body = "\n".join(body_lines)
 
             send_mail(
-                subject=f"[VM Bilgisayar] {subject}",
+                subject="[VM Bilgisayar] Teklif Talebi",
                 message=body,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[settings.CONTACT_TO_EMAIL],
@@ -146,11 +127,23 @@ def quote(request):
             messages.success(request, "Teklif talebiniz alındı. En kısa sürede dönüş yapacağız.")
             return redirect("quote")
 
-        messages.error(request, "Formda hata var. Lütfen alanları kontrol edin.")
+        FIELD_LABELS = {
+            "services": "Hizmetler",
+            "name": "Ad Soyad",
+            "phone": "Telefon",
+            "email": "E-posta",
+            "message": "Açıklama",
+        }
+
+        missing_fields = []
+        for field in form.errors:
+            missing_fields.append(FIELD_LABELS.get(field, field))
+
+        msg = "Lütfen aşağıdaki alanları doldurun:\n- " + "\n- ".join(missing_fields)
+        messages.error(request, msg)
     else:
         form = QuoteForm()
 
     return render(request, "core/quote.html", {"form": form})
-
 
 

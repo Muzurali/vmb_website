@@ -1,133 +1,91 @@
 {% extends "core/base.html" %}
+{% block title %}Teklif Al | VM Bilgisayar{% endblock %}
+
 {% block content %}
+<h1 class="h3 fw-bold mb-3">Teklif Al</h1>
 
-<div class="container py-4">
-  <div class="form-card p-4 p-md-5">
-    <h1 class="form-title">Teklif Al</h1>
-    <p class="form-subtitle">Bilgilerinizi doldurun, en kısa sürede size dönüş yapalım.</p>
+{% if messages %}
+  <div class="mt-3">
+    {% for m in messages %}
+      <div class="alert alert-{{ m.tags }}">{{ m }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
 
-    {% if messages %}
-      {% for m in messages %}
-        <div class="alert alert-soft mb-3">{{ m }}</div>
-      {% endfor %}
-    {% endif %}
+<div class="row g-3">
+  <div class="col-lg-10">
+    <div class="bg-white border rounded-3 p-4">
 
-    <form method="post" action="{% url 'quote' %}" id="quoteForm" novalidate>
-      {% csrf_token %}
+      <div class="fw-semibold mb-2">Teklif Talep Formu</div>
 
-      {% if form.errors %}
-        <div class="alert alert-danger mb-3">
-          Lütfen zorunlu alanları doldurun. (KVKK dahil)
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <!-- HİZMETLER (YAN YANA / GRID) -->
+        <div class="mb-3">
+          <label class="form-label">Hizmetler</label>
+
+          <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
+            {% for cb in form.services %}
+              <div class="col">
+                <div class="form-check border rounded-2 px-3 py-2 h-100">
+                  {{ cb.tag }}
+                  <label class="form-check-label ms-1" for="{{ cb.id_for_label }}">
+                    {{ cb.choice_label }}
+                  </label>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          {% if form.services.errors %}
+            <div class="text-danger small mt-1">{{ form.services.errors|striptags }}</div>
+          {% endif %}
         </div>
-      {% endif %}
 
-      {% if form.non_field_errors %}
-        <div class="alert alert-danger mb-3">
-          {{ form.non_field_errors }}
-        </div>
-      {% endif %}
-
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label class="form-label">{{ form.offer_type.label }}</label>
-          {{ form.offer_type }}
-          <div class="text-danger small">{{ form.offer_type.errors }}</div>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">{{ form.company.label }}</label>
-          {{ form.company }}
-          <div class="text-danger small">{{ form.company.errors }}</div>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">{{ form.name.label }}</label>
+        <!-- Ad Soyad -->
+        <div class="mb-3">
+          <label class="form-label">Ad Soyad</label>
           {{ form.name }}
-          <div class="text-danger small">{{ form.name.errors }}</div>
+          {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors|striptags }}</div>{% endif %}
         </div>
 
-        <div class="col-md-6">
-          <label class="form-label">{{ form.phone.label }}</label>
+        <!-- Telefon -->
+        <div class="mb-3">
+          <label class="form-label">Telefon</label>
           {{ form.phone }}
-          <div class="text-danger small">{{ form.phone.errors }}</div>
+          {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors|striptags }}</div>{% endif %}
         </div>
 
-        <div class="col-md-6">
-          <label class="form-label">{{ form.email.label }}</label>
+        <!-- E-posta -->
+        <div class="mb-3">
+          <label class="form-label">E-posta</label>
           {{ form.email }}
-          <div class="text-danger small">{{ form.email.errors }}</div>
+          {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors|striptags }}</div>{% endif %}
         </div>
 
-        <div class="col-md-6">
-          <label class="form-label">{{ form.tax_no.label }}</label>
-          {{ form.tax_no }}
-          <div class="text-danger small">{{ form.tax_no.errors }}</div>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">{{ form.erp_name.label }}</label>
-          {{ form.erp_name }}
-          <div class="text-danger small">{{ form.erp_name.errors }}</div>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">{{ form.heard_from.label }}</label>
-          {{ form.heard_from }}
-          <div class="text-danger small">{{ form.heard_from.errors }}</div>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">{{ form.e_doc_usage.label }}</label>
-          {{ form.e_doc_usage }}
-          <div class="text-danger small">{{ form.e_doc_usage.errors }}</div>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">{{ form.monthly_count.label }}</label>
-          {{ form.monthly_count }}
-          <div class="text-danger small">{{ form.monthly_count.errors }}</div>
-        </div>
-
-        <div class="col-12">
-          <label class="form-label">{{ form.services.label }}</label>
-          <div class="check-box">
-            {{ form.services }}
-          </div>
-          <div class="text-danger small">{{ form.services.errors }}</div>
-        </div>
-
-        <div class="col-12">
-          <label class="form-label">{{ form.message.label }}</label>
+        <!-- Açıklama -->
+        <div class="mb-3">
+          <label class="form-label">Açıklama (opsiyonel)</label>
           {{ form.message }}
-          <div class="text-danger small">{{ form.message.errors }}</div>
+          {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors|striptags }}</div>{% endif %}
         </div>
 
-        <div class="col-12">
-          <div class="form-check">
-            {{ form.consent }}
-            <label class="form-check-label">{{ form.consent.label }}</label>
-          </div>
-          <div class="text-danger small">{{ form.consent.errors }}</div>
-        </div>
+        <button type="submit" class="btn btn-dark w-100">Gönder</button>
+      </form>
 
-        <div class="col-12">
-          <div class="form-check">
-            {{ form.marketing_ok }}
-            <label class="form-check-label">{{ form.marketing_ok.label }}</label>
-          </div>
-          <div class="text-danger small">{{ form.marketing_ok.errors }}</div>
-        </div>
-      </div>
+      <script>
+        // input/textarea/select -> form-control
+        document.querySelectorAll('input:not([type="checkbox"]):not([type="hidden"]), textarea, select')
+          .forEach(el => el.classList.add("form-control"));
 
-      {{ form.website }}
+        // checkbox -> form-check-input
+        document.querySelectorAll('input[type="checkbox"]')
+          .forEach(el => el.classList.add("form-check-input"));
+      </script>
 
-      <div class="form-actions mt-3">
-        <button type="submit" class="btn btn-brand">
-          Teklifi Gönder
-        </button>
-      </div>
-    </form>
+    </div>
   </div>
 </div>
-
 {% endblock %}
+

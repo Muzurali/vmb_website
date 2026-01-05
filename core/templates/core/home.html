@@ -83,7 +83,7 @@
 </section>
 
 <!-- CTA -->
-<section class="bg-dark text-white rounded-3 p-4 p-md-5">
+<section class="bg-dark text-white rounded-3 p-4 p-md-5 mb-4">
   <div class="row align-items-center g-3">
     <div class="col-lg-8">
       <h3 class="fw-bold mb-1">İşletmenize uygun çözümü birlikte belirleyelim.</h3>
@@ -94,5 +94,48 @@
     </div>
   </div>
 </section>
+
+<!-- İŞ ORTAKLARIMIZ -->
+<section class="mb-4">
+  <div class="d-flex justify-content-between align-items-end mb-2">
+    <h2 class="h4 fw-bold m-0">İş Ortaklarımız</h2>
+    <span class="text-muted small">Birlikte çalıştığımız markalar</span>
+  </div>
+
+  <div class="row g-3">
+    {% for p in partners %}
+      <div class="col-12 col-md-4">
+        {% if p.website %}
+          <a href="{{ p.website }}" target="_blank" rel="noopener"
+             class="d-block bg-white border rounded-3 p-3 h-100 text-decoration-none">
+        {% else %}
+          <div class="bg-white border rounded-3 p-3 h-100">
+        {% endif %}
+
+            <div class="d-flex align-items-center justify-content-center" style="min-height:90px;">
+              <img src="/media/{{ p.logo.name }}" alt="{{ p.name }}"
+                   style="max-height:70px; max-width:160px; object-fit:contain;">
+            </div>
+
+            <div class="text-center mt-2">
+              <div class="fw-semibold">{{ p.name }}</div>
+
+              {% if p.description %}
+                <div class="text-muted small mt-1">{{ p.description }}</div>
+              {% endif %}
+            </div>
+
+        {% if p.website %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
 {% endblock %}
+
+
 

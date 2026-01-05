@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import Partner
 
-# Register your models here.
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ("name", "is_active", "order")
+    list_editable = ("is_active", "order")
+    search_fields = ("name",)
+

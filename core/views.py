@@ -6,10 +6,19 @@ from django.shortcuts import redirect, render
 
 from .content import SERVICES, SERVICE_DETAILS
 from .forms import ContactForm, QuoteForm
+from .models import Partner
 
 
 def home(request):
-    return render(request, "core/home.html", {"services": SERVICES})
+    partners = Partner.objects.filter(is_active=True).order_by("order")[:3]
+    return render(
+        request,
+        "core/home.html",
+        {
+            "services": SERVICES,
+            "partners": partners,
+        },
+    )
 
 
 def services(request):
@@ -85,12 +94,12 @@ def contact(request):
 
             messages.success(request, "Mesajınız alındı. En kısa sürede dönüş yapacağız.")
             return redirect("contact")
+
         print("CONTACT FORM ERRORS:", form.errors)
         print("CONTACT FORM DATA:", request.POST)
-
         messages.error(request, "Formda hata var. Lütfen alanları kontrol edin.")
     else:
-        form = ContactForm()  # ✅ GET isteğinde form burada oluşuyor
+        form = ContactForm()
 
     return render(request, "core/contact.html", {"form": form})
 
@@ -145,5 +154,6 @@ def quote(request):
         form = QuoteForm()
 
     return render(request, "core/quote.html", {"form": form})
+
 
 

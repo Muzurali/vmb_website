@@ -2,28 +2,37 @@
    ROOT DEĞİŞKENLER
 ================================ */
 :root{
-  --brand:#111827;        /* koyu ana renk */
-  --muted:#6b7280;        /* gri metin */
-  --bg:#f6f7fb;           /* site arka planı */
-  --navbg:#fbf7fb;        /* navbar + logo arka planı */
-  --logoText:#2b2e5f;     /* LOGO yazı rengi (navbar linkleri de bunu kullanacak) */
+  --brand:#111827;
+  --muted:#6b7280;
+
+  /* ✅ Logo (2b2e5f) tabanlı çok açık lila */
+  --bg:#f2f1ff;
+
+  /* ✅ Navbar: arka plandan biraz daha açık */
+  --navbg: var(--bg);
+
+
+  --logoText:#2b2e5f;
   --ring: rgba(17,24,39,.08);
 }
+
 
 /* ===============================
    GENEL
 ================================ */
-body{
-  background: var(--bg) !important;
-}
+body{ background: var(--bg) !important; }
 
-.container{
-  max-width: 1100px;
-}
+.container{ max-width: 1100px; }
 
 .small-muted{
   color: var(--muted);
   font-size: .92rem;
+}
+
+/* ✅ Kartlar arka plandan daha “yüzer” dursun */
+.card{
+  background: linear-gradient(180deg, #ffffff, #f7f8ff);
+  border-radius: 18px;
 }
 
 /* ===============================
@@ -31,43 +40,31 @@ body{
 ================================ */
 .navbar{
   background-color: var(--navbg) !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,.08);
-  padding: .6rem 0;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(43,46,95,.08);
+  padding: .8rem 0;
+  backdrop-filter: blur(6px);
 }
 
-.navbar-brand{
-  letter-spacing: .5px;
-}
+.navbar-brand{ letter-spacing: .5px; }
 
-/* Navbar linkler = logo yazı rengi */
 .navbar .nav-link{
   color: var(--logoText) !important;
   font-weight: 600;
+  opacity: .85;
 }
 
 .navbar .nav-link:hover{
-  color: #1f224a !important; /* logo renginin koyusu */
+  opacity: 1;
+  color:#1f224a !important;
 }
-
-/* Dropdown içi de aynı renk */
-.dropdown-menu .dropdown-item{
-  color: var(--logoText);
-  font-weight: 500;
-}
-
 .dropdown-menu .dropdown-item:hover{
   background-color: rgba(43,46,95,.08);
-  color: #1f224a;
+  color:#1f224a;
 }
 
-/* Mobil hamburger */
-.navbar-toggler{
-  border-color: rgba(0,0,0,.2);
-}
-
-.navbar-toggler-icon{
-  filter: invert(0);
-}
+.navbar-toggler{ border-color: rgba(0,0,0,.2); }
+.navbar-toggler-icon{ filter: invert(0); }
 
 /* ===============================
    LOGO
@@ -89,10 +86,7 @@ body{
   background: var(--brand);
   border-color: var(--brand);
 }
-
-.btn-dark:hover{
-  filter: brightness(1.05);
-}
+.btn-dark:hover{ filter: brightness(1.05); }
 
 /* ===============================
    KARTLAR
@@ -104,16 +98,114 @@ body{
 }
 
 /* ===============================
-   HERO
+   HERO (ESKİ - KALSIN)
 ================================ */
 .hero{
-  background: linear-gradient(
-    135deg,
-    rgba(17,24,39,.06),
-    rgba(17,24,39,.02)
-  );
+  background: linear-gradient(135deg, rgba(17,24,39,.06), rgba(17,24,39,.02));
   border: 1px solid rgba(17,24,39,.08);
   box-shadow: 0 12px 40px rgba(17,24,39,.06);
+}
+
+/* ===============================
+   HERO (YENİ - FULL BANNER)
+================================ */
+.hero-visual{
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+
+  min-height: 300px;
+
+  background-image: url("/static/core/img/hero/banner.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: right center;
+
+  border: 1px solid rgba(17,24,39,.08);
+  box-shadow: 0 10px 30px rgba(17,24,39,.06);
+}
+
+/* Metni okunur yapan overlay */
+.hero-visual::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+    90deg,
+    rgba(242,241,255,.95) 0%,
+    rgba(242,241,255,.78) 45%,
+    rgba(242,241,255,.10) 100%
+  );
+}
+
+
+.hero-inner{
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.hero-content{
+  position: relative;
+  max-width: 720px;
+  padding: 20px;
+  border-radius: 18px;
+}
+
+.hero-title{
+  font-weight: 800;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1.05;
+  margin-bottom: 12px;
+  color: var(--brand);
+}
+
+.hero-sub{
+  font-size: 1.125rem;
+  color: rgba(17,24,39,.72);
+  margin-bottom: 16px;
+}
+
+.hero-actions{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.hero-badges{
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: .9rem;
+  color: rgba(17,24,39,.65);
+}
+
+.hero-badges span{
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(17,24,39,.10);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+/* Mobil */
+@media (max-width: 768px){
+  .hero-visual{
+    min-height: 320px;
+    background-position: 85% center;
+  }
+  .hero-inner{ min-height: 320px; }
+  .hero-content{ padding: 18px; }
+}
+
+/* ===============================
+   HERO ALTINA YAPIŞTIRMA
+================================ */
+.hero-stick-next{
+  margin-top: -28px;
+  position: relative;
+  z-index: 2;
 }
 
 /* ===============================
@@ -136,10 +228,13 @@ body{
 .service-card{
   transition: transform .15s ease, box-shadow .15s ease;
 }
-
 .service-card:hover{
   transform: translateY(-3px);
   box-shadow: 0 18px 45px rgba(17,24,39,.08);
+}
+.service-card .card-img-top{
+  height: 170px;
+  object-fit: cover;
 }
 
 /* ===============================
@@ -178,7 +273,7 @@ body{
 .form-control:focus,
 .form-select:focus{
   border-color: rgba(43,46,95,.55);
-  box-shadow: 0 0 0 .25rem rgba(43,46,95,.12) !important; /* ring */
+  box-shadow: 0 0 0 .25rem rgba(43,46,95,.12) !important;
 }
 
 .check-box{
@@ -188,13 +283,9 @@ body{
   background: rgba(17,24,39,.02);
 }
 
-.check-box .form-check{
-  margin: .35rem 0;
-}
+.check-box .form-check{ margin: .35rem 0; }
 
-.form-actions{
-  margin-top: 1rem;
-}
+.form-actions{ margin-top: 1rem; }
 
 .btn-brand{
   background: var(--brand);
@@ -211,9 +302,83 @@ body{
   color:#fff;
 }
 
-
 .alert-soft{
   border-radius: 12px;
   border: 1px solid rgba(17,24,39,.10);
   background: rgba(17,24,39,.04);
+}
+
+/* ===============================
+   HİZMETLERİMİZ – SOFT RENKLİ
+================================ */
+.service-mini{
+  border-radius: 18px;
+  padding: 22px;
+  border: 1px solid rgba(17,24,39,.08) !important;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.service-mini:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(17,24,39,.10);
+}
+
+.service-mini .fw-semibold{
+  font-size: 1rem;
+  color: #111827;
+}
+
+.service-mini-desc{
+  margin-top: 6px;
+  font-size: .85rem;
+  color: #4b5563;
+}
+
+/* Soft renk varyantları */
+.service-soft-blue{
+  background: linear-gradient(180deg, #f0f7ff, #eaf2ff);
+}
+
+.service-soft-purple{
+  background: linear-gradient(180deg, #f6f3ff, #f0ebff);
+}
+
+.service-soft-green{
+  background: linear-gradient(180deg, #f1fbf6, #eaf7f0);
+}
+
+/* Logo'yu navbar arka planına “oturt” */
+.logo-badge{
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.70);
+  border: 1px solid rgba(43,46,95,.10);
+  box-shadow: 0 10px 26px rgba(17,24,39,.08);
+  backdrop-filter: blur(6px);
+}
+
+/* logo boyutu aynı kalsın */
+.navbar-logo{
+  height: 56px;
+  width: auto;
+  display:block;
+}
+/* Dropdown menü hero'nun arkasında kalmasın */
+.navbar{
+  position: relative;
+  z-index: 9999;
+}
+
+.dropdown-menu{
+  z-index: 10000;
+}
+
+/* Hero'nun üst katman olmasını engelle */
+.hero-visual,
+.hero-stick-next,
+.logo-badge{
+  position: relative;
+  z-index: 1;
 }
